@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Management Diagram</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Team Dashboard</h1>
+        <div class="controls">
+            <input type="text" id="skillSearch" placeholder="Search by skill...">
+            <button id="quickAddMemberBtn">Add Member</button>
+            <button class="view-mode-btn" data-view="overview">Overview</button>
+            <button class="view-mode-btn" data-view="task">Task View</button>
+            <button class="view-mode-btn" data-view="skills">Skills Matrix</button>
+        </div>
+    </header>
+
+    <main id="teamDiagramContainer">
+        </main>
+
+    <div id="memberModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modalName"></h2>
+            <form id="memberEditForm">
+                <input type="hidden" id="memberId">
+                <label for="modalAvailability">Availability:</label>
+                <select id="modalAvailability">
+                    <option value="Available">Available</option>
+                    <option value="Partially Available">Partially Available</option>
+                    <option value="Fully Occupied">Fully Occupied</option>
+                    <option value="On Leave">On Leave</option>
+                </select>
+
+                <label for="modalCurrentTask">Current Task:</label>
+                <textarea id="modalCurrentTask" rows="3"></textarea>
+
+                <label for="modalSkills">Skills (name:prof; e.g., JS:Expert;CSS:Intermediate):</label>
+                <input type="text" id="modalSkills">
+                <label for="modalNotes">Notes:</label>
+                <textarea id="modalNotes" rows="3"></textarea>
+
+                <p>Last Updated: <span id="modalLastUpdated"></span></p>
+                <button type="submit" id="saveChangesBtn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="quickAddModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn-add">&times;</span>
+            <h2>Add New Team Member</h2>
+            <form id="quickAddForm">
+                <label for="newMemberName">Name:</label>
+                <input type="text" id="newMemberName" required>
+                <button type="submit">Add Member</button>
+            </form>
+        </div>
+    </div>
+
+    <aside id="changeLog" style="display:none;">
+        <h3>Change Log</h3>
+        <ul id="logList"></ul>
+    </aside>
+
+    <script src="script.js"></script>
+</body>
+</html>
