@@ -1,0 +1,322 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f7f6;
+    color: #333;
+}
+
+header {
+    background-color: #3498db;
+    color: white;
+    padding: 1em;
+    text-align: center;
+}
+
+.controls {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+}
+
+.controls input, .controls button, .controls select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+#teamDiagramContainer {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+    justify-content: center;
+}
+
+.team-member-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+    border-left-width: 5px; /* For availability status */
+}
+
+.team-member-card:hover {
+    transform: translateY(-5px);
+}
+
+.team-member-card h3 {
+    margin-top: 0;
+    color: #2980b9;
+}
+
+.team-member-card p {
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.workload-indicator {
+    font-size: 0.8em;
+    color: #777;
+}
+
+/* Availability Status Colors */
+.status-available { border-left-color: #2ecc71; } /* Green */
+.status-partially-available { border-left-color: #f1c40f; } /* Yellow */
+.status-fully-occupied { border-left-color: #e74c3c; } /* Red */
+.status-on-leave { border-left-color: #95a5a6; } /* Grey */
+.status-unassigned { border: 2px dashed #e74c3c; background-color: #fceded; } /* Highlight for unassigned */
+
+
+/* Modal Styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.modal-content label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+.modal-content input[type="text"],
+.modal-content textarea,
+.modal-content select {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.modal-content button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+.modal-content button:hover {
+    background-color: #2980b9;
+}
+
+.close-btn, .close-btn-add {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close-btn:hover, .close-btn:focus,
+.close-btn-add:hover, .close-btn-add:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* --- View Mode Button Styling --- */
+.view-mode-btn.active {
+    background-color: #2980b9; /* Darker blue for active */
+    color: white;
+    font-weight: bold;
+    border-color: #2980b9;
+}
+
+/* --- Task View Styling --- */
+.task-view h2 {
+    width: 100%;
+    text-align: left;
+    margin: 25px 0 15px 0;
+    color: #333;
+    font-size: 1.4em;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 8px;
+}
+
+.task-view .member-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Same gap as overview for consistency */
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Ensure cards in task view take up appropriate space if fewer */
+.overview-view, .task-view .member-group {
+    justify-content: flex-start; /* Align cards to the start */
+}
+
+
+/* --- Skills Matrix View Styling --- */
+.skills-matrix-view { /* Container for the table */
+    width: 100%;
+    overflow-x: auto; /* Allows horizontal scrolling if table is too wide */
+    margin-top: 10px;
+}
+
+.skills-matrix-table {
+    width: 100%;
+    min-width: 600px; /* Minimum width before scrolling starts */
+    border-collapse: collapse;
+    margin-top: 10px; /* Spacing from controls */
+    font-size: 0.9em;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.skills-matrix-table th, 
+.skills-matrix-table td {
+    border: 1px solid #ddd;
+    padding: 10px 14px; /* Increased padding */
+    text-align: left;
+    vertical-align: middle;
+}
+
+.skills-matrix-table th {
+    background-color: #f0f4f8; /* Lighter, professional header */
+    color: #333;
+    font-weight: 600; /* Slightly bolder */
+    position: sticky; /* Keep headers visible on scroll if table is very long vertically */
+    top: 0; /* Required for sticky */
+    z-index: 1; /* Ensure header is above content */
+}
+
+.skills-matrix-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.skills-matrix-table tbody tr:hover {
+    background-color: #eaf2f8; /* Subtle hover */
+}
+
+/* Proficiency-specific styling in table cells */
+.skills-matrix-table td.proficiency-beginner { 
+    color: #c0392b; /* Stronger red for beginner */
+    font-weight: 500;
+}
+.skills-matrix-table td.proficiency-intermediate { 
+    color: #d35400; /* Orange for intermediate */
+    font-weight: 500;
+}
+.skills-matrix-table td.proficiency-expert { 
+    color: #27ae60; /* Green for expert */
+    font-weight: 600; /* Make expert stand out a bit more */
+}
+.skills-matrix-table td { /* Default for '-' or no skill */
+    color: #7f8c8d; 
+}
+/* --- Password Overlay Styling --- */
+#passwordOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); /* Darker overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top */
+    font-family: Arial, sans-serif;
+}
+
+.password-prompt {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.password-prompt h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.password-prompt input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    font-size: 1em;
+}
+
+.password-prompt button {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s;
+}
+
+.password-prompt button:hover {
+    background-color: #2980b9;
+}
+
+.password-prompt #passwordError {
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+/* --- Modal Action Buttons Styling --- */
+.modal-actions {
+    display: flex;
+    justify-content: space-between; /* Puts Save on left, Delete on right */
+    margin-top: 20px;
+}
+
+.modal-actions button { /* General styling for buttons in this container */
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+#saveChangesBtn { /* Existing save button styling can be kept or adjusted */
+    background-color: #3498db;
+    color: white;
+    border: none;
+}
+#saveChangesBtn:hover {
+    background-color: #2980b9;
+}
+
+.delete-button {
+    background-color: #e74c3c; /* Red for delete */
+    color: white;
+    border: none;
+}
+
+.delete-button:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}
